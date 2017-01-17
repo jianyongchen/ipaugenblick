@@ -24,7 +24,9 @@ enum
     IPAUGENBLICK_DISCONNECT_CLIENT,
     IPAUGENBLICK_NEW_IFACES,
     IPAUGENBLICK_NEW_ADDRESSES,
-    IPAUGENBLICK_END_OF_RECORD
+    IPAUGENBLICK_END_OF_RECORD,
+    IPAUGENBLICK_SOCKET_SHUTDOWN_COMMAND,
+    IPAUGENBLICK_SOCKET_DECLINE_COMMAND
 };
 
 typedef struct
@@ -40,6 +42,11 @@ typedef struct
     unsigned int ipaddr;
     unsigned short port;
 }__attribute__((packed))ipaugenblick_open_accepted_socket_t;
+
+typedef struct
+{
+    unsigned long socket_descr;
+}__attribute__((packed))ipaugenblick_decline_accepted_socket_t;
 
 typedef struct
 {
@@ -94,6 +101,11 @@ typedef struct
 
 typedef struct
 {
+    int how;
+}__attribute__((packed))ipaugenblick_socket_shutdown_t;
+
+typedef struct
+{
     int cmd;
     unsigned int ringset_idx;
     int          parent_idx;
@@ -107,6 +119,8 @@ typedef struct
         ipaugenblick_socket_connect_bind_cmd_t socket_connect_bind;
 	ipaugenblick_route_cmd_t route;
 	ipaugenblick_setsockopt_cmd_t setsockopt;
+	ipaugenblick_socket_shutdown_t socket_shutdown;
+	ipaugenblick_decline_accepted_socket_t socket_decline;
     }u;
 }__attribute__((packed))ipaugenblick_cmd_t;
 
@@ -139,7 +153,7 @@ typedef struct
 #define FREE_ACCEPTED_POOL_NAME "free_accepted_pool"
 #define SELECTOR_POOL_NAME "selector_pool"
 #define SELECTOR_RING_NAME "selector_ring"
-#define IPAUGENBLICK_CONNECTION_POOL_SIZE 512
+#define IPAUGENBLICK_CONNECTION_POOL_SIZE 2048
 #define IPAUGENBLICK_CLIENTS_POOL_SIZE 64
 #define IPAUGENBLICK_SELECTOR_POOL_SIZE 64
 #define COMMON_NOTIFICATIONS_POOL_NAME "common_notifications_pool_name"

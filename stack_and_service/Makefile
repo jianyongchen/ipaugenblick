@@ -1,4 +1,4 @@
-RTE_SDK=$(CURRENT_DIR)dpdk-2.0.0
+RTE_SDK=$(CURRENT_DIR)dpdk-16.07
 RTE_TARGET ?= x86_64-native-linuxapp-gcc
 include $(RTE_SDK)/mk/rte.vars.mk
 SRC_ROOT=$(CURRENT_DIR)
@@ -29,7 +29,8 @@ drivers/net/dpdk/dpdk_sw_loop.c drivers/net/dpdk/device.c service/ipaugenblick_s
 log/ipaugenblick_log.c
 #CFLAGS += -g
 CFLAGS += -Ofast   
-CFLAGS += $(WERROR_FLAGS) 
+CFLAGS += -Wno-deprecated-declarations
+LDLIBS += -lrte_eal -lrte_timer -lrte_ring -lrte_mempool -lethdev -lrte_mbuf
 LINUX_HEADERS=$(SRC_ROOT)stack_and_service/
 DPDK_HEADERS=$(RTE_SDK)/x86_64-native-linuxapp-gcc/include
 ALL_HEADERS = -I$(LINUX_HEADERS) -I$(DPDK_HEADERS) -I$(LINUX_HEADERS)service

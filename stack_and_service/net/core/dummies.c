@@ -74,7 +74,6 @@
 #include <rte_lcore.h>
 #include <rte_mempool.h>
 #include <rte_cycles.h>
-#include <rte_hash.h>
 #include <rte_byteorder.h>
 
 void ip_mc_down(struct in_device *in_dev)
@@ -445,7 +444,7 @@ __wsum csum_partial_generic(const void *src, int len, __wsum currsum,int *src_er
      }
      REDUCE;
 finished:
-     return (~sum & 0xffff);
+     return (sum & 0xffff);
 }
 
 int __must_check kstrtoul(const char *s, unsigned int base, unsigned long *res)

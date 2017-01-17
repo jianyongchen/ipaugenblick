@@ -157,7 +157,7 @@ printf("bind to %s %d\n",my_ip_addr,port_to_bind + i);
 #else
 			    in_addr->sin_family = AF_INET;
 			    in_addr->sin_addr.s_addr = inet_addr(ip_addr_2_connect);
-			    in_addr->sin_port = port_to_connect;
+			    in_addr->sin_port = htons(port_to_connect);
                 	    if(ipaugenblick_sendto(ipaugenblick_fd_idx2sock(&writefdset,ready_socket),pdesc,0,DATAGRAM_SIZE,&addr,addrlen)) { 
                         	ipaugenblick_release_tx_buffer(pdesc);
 	                    }
@@ -178,7 +178,7 @@ printf("bind to %s %d\n",my_ip_addr,port_to_bind + i);
 				in_addr = &addresses[i];
 				in_addr->sin_family = AF_INET;
                         	in_addr->sin_addr.s_addr = inet_addr(ip_addr_2_connect);
-                        	in_addr->sin_port = port_to_connect;
+                        	in_addr->sin_port = htons(port_to_connect);
                            }
                            if(ipaugenblick_sendto_bulk(ipaugenblick_fd_idx2sock(&writefdset,sock),
 							bulk_bufs,offsets,lengths,addresses,
@@ -196,8 +196,6 @@ printf("bind to %s %d\n",my_ip_addr,port_to_bind + i);
                             }
                     }
 	    }
-	    if(tx_space == 0)
-		continue;
 	    if(!(transmitted_packets%1000)) {
                     printf("received %u transmitted_packets %u\n",received_packets,transmitted_packets);
 		    print_stats();
